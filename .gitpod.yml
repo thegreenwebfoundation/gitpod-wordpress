@@ -21,7 +21,7 @@ tasks:
       wget -q https://raw.githubusercontent.com/thegreenwebfoundation/gitpod-wordpress/main/conf/wp-config.php -O /workspace/wordpress/wp-config.php
       mysqladmin create wordpress  
     command: >
-      wp core install 
+      gp await-port 3306 && wp core install 
       --url="$(gp url 8080 | sed -e s/https:\\/\\/// | sed -e s/\\///)"
       --title="WordPress" 
       --admin_user="admin" 
@@ -31,8 +31,7 @@ tasks:
 
   - name: wp server
     init: |
-      sleep 2
-      wp server --host=0.0.0.0 --docroot=/workspace/wordpress
+      gp await-port 3306 && wp server --host=0.0.0.0 --docroot=/workspace/wordpress
 
   - name: mailhog # start MailHog (SMTP testing tool) 
     command: mailhog -api-bind-addr 127.0.0.1:8025 -ui-bind-addr 127.0.0.1:8025 -smtp-bind-addr 127.0.0.1:1025
