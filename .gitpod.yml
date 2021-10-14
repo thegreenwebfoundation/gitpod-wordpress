@@ -19,7 +19,7 @@ tasks:
       mkdir -p /workspace/wordpress/
       wp core download --path=/workspace/wordpress/
       wget -q https://raw.githubusercontent.com/thegreenwebfoundation/gitpod-wordpress/main/conf/wp-config.php -O /workspace/wordpress/wp-config.php
-      mysqladmin create wordpress  
+      gp await-port 3306 && mysqladmin create wordpress  
     command: >
       gp await-port 3306 && wp core install 
       --url="$(gp url 8080 | sed -e s/https:\\/\\/// | sed -e s/\\///)"
