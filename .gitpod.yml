@@ -14,7 +14,8 @@ ports:
     onOpen: ignore
 
 tasks:
-  - init: | 
+  - name: set up wordpress file structure
+    init: | 
       mkdir -p /workspace/wordpress/
       wp core download --path=/workspace/wordpress/
       wget -q https://raw.githubusercontent.com/thegreenwebfoundation/gitpod-wordpress/main/conf/wp-config.php -O /workspace/wordpress/wp-config.php
@@ -27,6 +28,11 @@ tasks:
       --admin_password="password" 
       --admin_email="admin@gitpod.test" 
       --path="/workspace/wordpress/"
-  
-  # start MailHog (SMTP testing tool) 
-  - command: mailhog -api-bind-addr 127.0.0.1:8025 -ui-bind-addr 127.0.0.1:8025 -smtp-bind-addr 127.0.0.1:1025
+
+  - name: wp server
+    init: |
+      sleep 2
+      wp server --host=0.0.0.0 --docroot=/workspace/wordpress
+
+  - name: mailhog # start MailHog (SMTP testing tool) 
+    command: mailhog -api-bind-addr 127.0.0.1:8025 -ui-bind-addr 127.0.0.1:8025 -smtp-bind-addr 127.0.0.1:1025
