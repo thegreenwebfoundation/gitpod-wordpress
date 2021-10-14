@@ -144,7 +144,3 @@ export -f browse-wpadmin
 export -f browse-dbadmin
 export -f browse-phpinfo
 export -f browse-emails
-
-# use Node.js LTS
-nvm use lts/* > /dev/null
-export NODE_VERSION=$(node -v | sed 's/v//g')
