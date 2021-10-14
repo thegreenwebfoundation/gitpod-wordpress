@@ -32,8 +32,14 @@ RUN wget -q https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 
 USER gitpod
 
-# create wordpress database, and sample dirs
+# create starter wordpress directory structure
+USER root
 RUN rm -rf $WORDPRESS_ROOT && \
     mkdir -p ${WORDPRESS_ROOT} && \
+    chown gitpod:gitpod ${WORDPRESS_ROOT}
+
+# run install steps and add sample wp-config
     wp core download --path="${WORDPRESS_ROOT}" && \
     mysql -e "CREATE DATABASE wordpress /*\!40100 DEFAULT CHARACTER SET utf8 */;"
+    wget -q https://raw.githubusercontent.com/thegreenwebfoundation/gitpod-wordpress/main/conf/wp-config.php \
+    -O ${WORDPRESS_ROOT}/wp-config.php
