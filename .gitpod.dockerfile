@@ -28,16 +28,3 @@ RUN wget -q https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
     mv $HOME/wp-cli.phar /usr/local/bin/wp && \
     chown gitpod:gitpod /usr/local/bin/wp
 
-### INSTALL EMPTY WP
-
-# create starter wordpress directory structure
-USER root
-RUN rm -rf $WORDPRESS_ROOT && \
-    mkdir -p ${WORDPRESS_ROOT} && \
-    chown gitpod:gitpod ${WORDPRESS_ROOT}
-
-# then run install steps and add sample wp-config.php
-USER gitpod
-RUN  wp core download --path="${WORDPRESS_ROOT}" && \
-    wget -q https://raw.githubusercontent.com/thegreenwebfoundation/gitpod-wordpress/main/conf/wp-config.php \
-    -O ${WORDPRESS_ROOT}/wp-config.php
