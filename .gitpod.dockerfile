@@ -39,6 +39,5 @@ RUN rm -rf $WORDPRESS_ROOT && \
 # then run install steps and add sample wp-config.php
 USER gitpod
 RUN  wp core download --path="${WORDPRESS_ROOT}" && \
-    mysql -e "CREATE DATABASE wordpress /*\!40100 DEFAULT CHARACTER SET utf8 */;" && \
     wget -q https://raw.githubusercontent.com/thegreenwebfoundation/gitpod-wordpress/main/conf/wp-config.php \
     -O ${WORDPRESS_ROOT}/wp-config.php
