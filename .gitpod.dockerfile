@@ -12,8 +12,8 @@ ENV WORDPRESS_ROOT="/workspace/wordpress/"
 ### MailHog ###
 USER root
 ARG DEBIAN_FRONTEND=noninteractive
-RUN go install github.com/mailhog/MailHog@latest && \
-    go get github.com/mailhog/mhsendmail@latest && \
+RUN go get github.com/mailhog/MailHog && \
+    go get github.com/mailhog/mhsendmail && \
     cp $GOPATH/bin/MailHog /usr/local/bin/mailhog && \
     cp $GOPATH/bin/mhsendmail /usr/local/bin/mhsendmail && \
     ln $GOPATH/bin/mhsendmail /usr/sbin/sendmail && \
@@ -39,7 +39,8 @@ RUN rm -rf $WORDPRESS_ROOT && \
     chown gitpod:gitpod ${WORDPRESS_ROOT}
 
 # run install steps and add sample wp-config
-    wp core download --path="${WORDPRESS_ROOT}" && \
+USER gitpod
+RUN  wp core download --path="${WORDPRESS_ROOT}" && \
     mysql -e "CREATE DATABASE wordpress /*\!40100 DEFAULT CHARACTER SET utf8 */;"
     wget -q https://raw.githubusercontent.com/thegreenwebfoundation/gitpod-wordpress/main/conf/wp-config.php \
     -O ${WORDPRESS_ROOT}/wp-config.php
